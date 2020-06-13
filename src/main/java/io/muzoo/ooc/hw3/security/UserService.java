@@ -14,7 +14,7 @@ public class UserService {
         users.put("nessie", new User("nessie", "something"));
     }
 
-    public User findByUsername(String username){
+    public  User findByUsername(String username){
         return users.get(username);
     }
 

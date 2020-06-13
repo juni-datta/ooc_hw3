@@ -17,17 +17,12 @@ public class LoginServlet extends AbstractRoutableHttpServlet{
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-
         String error = "";
         // authentication
-        if (username != null && username.equals("gigadot") && password != null && password.equals("12345")) {
-            HttpSession session = request.getSession();
-            session.setAttribute("username", username);
-
+        if (securityService.login(request)){
             response.sendRedirect("/");
-        } else {
+        }
+        else {
             error = "Username or password incorrect. Please try again.";
 
             request.setAttribute("error", error);

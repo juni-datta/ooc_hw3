@@ -1,8 +1,11 @@
 package io.muzoo.ooc.hw3.servlets;
 
+import io.muzoo.ooc.hw3.security.SecurityService;
+import io.muzoo.ooc.hw3.security.UserService;
 import org.apache.catalina.Context;
 import org.apache.catalina.startup.Tomcat;
 
+import java.security.Security;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,10 +19,13 @@ public class ServletRouter {
         servletClasses.add(LogoutServlet.class);
     }
     public void init(Context context){
-
+        UserService userService = new UserService();
+        SecurityService securityService = new SecurityService();
+        securityService.setUserService(userService);
         for (Class<? extends AbstractRoutableHttpServlet> servletClass: servletClasses){
             try {
                 AbstractRoutableHttpServlet httpServlet = servletClass.newInstance();
+                httpServlet.setSecurityService(securityService);
                 Tomcat.addServlet(context, servletClass.getSimpleName(), httpServlet);
                 context.addServletMapping(httpServlet.getPattern(), servletClass.getSimpleName());
 

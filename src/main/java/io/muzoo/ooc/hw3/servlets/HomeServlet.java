@@ -9,13 +9,12 @@ import java.io.IOException;
 
 public class HomeServlet extends AbstractRoutableHttpServlet{
 
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession();
 
-        Object usernameObject = session.getAttribute("username");
-        if (usernameObject != null && usernameObject instanceof String) {
-            String username = (String) usernameObject;
+        if (securityService.isAuthorized(request)) {
+            String username = securityService.getCurrentUsername(request);
             request.setAttribute("username", username);
 
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("WEB-INF/home.jsp");
