@@ -6,6 +6,7 @@ import org.apache.catalina.Context;
 import org.apache.catalina.startup.Tomcat;
 
 import java.security.Security;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,8 +18,9 @@ public class ServletRouter {
         servletClasses.add(HomeServlet.class);
         servletClasses.add(LoginServlet.class);
         servletClasses.add(LogoutServlet.class);
+        servletClasses.add(SignUpServlet.class);
     }
-    public void init(Context context){
+    public void init(Context context) throws SQLException, ClassNotFoundException {
         UserService userService = new UserService();
         SecurityService securityService = new SecurityService();
         securityService.setUserService(userService);
@@ -26,6 +28,7 @@ public class ServletRouter {
             try {
                 AbstractRoutableHttpServlet httpServlet = servletClass.newInstance();
                 httpServlet.setSecurityService(securityService);
+                httpServlet.setUserService(userService);
                 Tomcat.addServlet(context, servletClass.getSimpleName(), httpServlet);
                 context.addServletMapping(httpServlet.getPattern(), servletClass.getSimpleName());
 

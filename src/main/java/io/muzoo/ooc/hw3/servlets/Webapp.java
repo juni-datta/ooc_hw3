@@ -6,6 +6,7 @@ import org.apache.catalina.startup.Tomcat;
 
 import javax.servlet.ServletException;
 import java.io.File;
+import java.sql.SQLException;
 
 public class Webapp {
 
@@ -28,6 +29,10 @@ public class Webapp {
         } catch (ServletException e) {
             e.printStackTrace();
         } catch (LifecycleException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
 
